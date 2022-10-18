@@ -18,5 +18,5 @@ public interface PmsProductCategoryAttributeRelationMapper extends BaseMapper<Pm
 
 
 
-    List<ProductAttributeDTO> select(List<Long> cid);
+    List<ProductAttributeDTO> select(Long cid);
 }

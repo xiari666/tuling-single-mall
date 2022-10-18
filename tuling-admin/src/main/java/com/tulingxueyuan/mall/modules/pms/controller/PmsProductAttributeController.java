@@ -131,10 +131,9 @@ public class PmsProductAttributeController {
      *     method:'get'
      */
     @RequestMapping(value = "/attrInfo/{cid}", method = RequestMethod.GET)
-
-    public CommonResult getProductAttributeByCid(@RequestParam List<Long> cid) {
-
-
+    //筛选属性编辑数据初始化
+    public CommonResult getProductAttributeByCid(@PathVariable Long cid) {
+        //此处由于mapper.xml中<result column="product_attribute_category_id" property="attributeCategoryId" />自段写错导致product_attribute_category_id为null浪费时间，当前端报值为null,注意检查后端mapper.xml字段
         List<ProductAttributeDTO> result =pmsProductCategoryAttributeRelationMapper.select(cid);
 
 

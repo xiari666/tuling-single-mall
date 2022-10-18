@@ -9,14 +9,14 @@
         <result column="product_attribute_id" property="productAttributeId" />
     </resultMap>
     <resultMap id="ProductAttibuteDto" type="com.tulingxueyuan.mall.modules.pms.model.dto.ProductAttributeDTO">
-        <result column="product_category_id" property="attributeCategoryId" />
+        <result column="product_attribute_category_id" property="attributeCategoryId" />
         <result column="product_attribute_id" property="attributeId" />
     </resultMap>
     <select id="select" resultMap="ProductAttibuteDto">
         SELECT pms_product_category_attribute_relation.product_attribute_id,pms_product_attribute.product_attribute_category_id
         FROM pms_product_category_attribute_relation
                  LEFT JOIN pms_product_attribute
-                           ON pms_product_category_attribute_relation.product_category_id=pms_product_attribute.id
+                           ON pms_product_category_attribute_relation.product_attribute_id=pms_product_attribute.id
         WHERE pms_product_category_attribute_relation.product_category_id=#{cid}
     </select>
 

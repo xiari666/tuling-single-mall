@@ -72,7 +72,7 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
     @Transactional(rollbackFor = {Exception.class})
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public boolean CustomSave(PmsProductCategoryDTO pmsProductCategoryDTO) {
-        boolean isSave, isSave1;
+
         //保存商品分类id
         PmsProductCategory pmsProductCategory = new PmsProductCategory();
         //通过BeanUtils将pmsProductCategoryDTO数据拷贝到pmsProductCategory
@@ -80,33 +80,53 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
         //由于表单没有维护分类级别，商品数量，需要设置默认值
         //设置默认数量0
         pmsProductCategory.setProductCount(0);
-
+        extracted(pmsProductCategoryDTO, pmsProductCategory);
+        return true;
+    }
+    //抽取接口
+    private void extracted(PmsProductCategoryDTO pmsProductCategoryDTO, PmsProductCategory pmsProductCategory) {
         //通过有无上级分类设置级别
+
         if (pmsProductCategory.getParentId() == 0) {
             pmsProductCategory.setLevel(0);
         } else {
             //由于我们只有二级分类所以写死，否则需要查询parent_id
             pmsProductCategory.setLevel(1);
         }
-        isSave = this.save(pmsProductCategory);
+        this.save(pmsProductCategory);
 
-        //由于表单没有维护分类级别，商品数量，需要设置默认值
-        BeanUtils.copyProperties(pmsProductCategoryDTO,pmsProductCategory);
-        pmsProductCategory.getId();
-        pmsProductCategoryDTO.getId();
+        //根据前端需要数据
         List<Long> productCategoryDTOList = pmsProductCategoryDTO.getProductAttributeIdList();
+
         List<PmsProductCategoryAttributeRelation> list = new ArrayList<>();
+
         for (Long attId : productCategoryDTOList) {
-            //得到分类保存后的主键id，保存商品分类筛选属性关系
             PmsProductCategoryAttributeRelation pmsProductCategoryAttributeRelation = new PmsProductCategoryAttributeRelation();
             pmsProductCategoryAttributeRelation.setProductCategoryId(pmsProductCategory.getId());
-
             pmsProductCategoryAttributeRelation.setProductAttributeId(attId);
             list.add(pmsProductCategoryAttributeRelation);
         }
-        isSave1=pmsProductCategoryAttributeRelationService.saveBatch(list);
-        return isSave&&isSave1;
+
+
+        pmsProductCategoryAttributeRelationService.saveBatch(list);
     }
 
+    @Override
+    public boolean update(PmsProductCategoryDTO pmsProductCategoryDTO) {
+        //保存商品分类id
 
+        PmsProductCategory pmsProductCategory = new PmsProductCategory();
+        //通过BeanUtils将pmsProductCategoryDTO数据拷贝到pmsProductCategory
+        BeanUtils.copyProperties(pmsProductCategoryDTO, pmsProductCategory);
+        //由于表单没有维护分类级别，商品数量，需要设置默认值
+        //设置默认数量0
+        QueryWrapper<PmsProductCategoryAttributeRelation> queryWrapper=new QueryWrapper<>();
+        queryWrapper.lambda().eq(PmsProductCategoryAttributeRelation::getProductCategoryId,pmsProductCategory.getId());
+        pmsProductCategoryAttributeRelationService.remove(queryWrapper);
+
+        extracted(pmsProductCategoryDTO, pmsProductCategory);
+
+        return true;
+
+    }
 }

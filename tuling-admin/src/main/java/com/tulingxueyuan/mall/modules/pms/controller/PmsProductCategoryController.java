@@ -98,9 +98,9 @@ public class PmsProductCategoryController {
         }
     }
     //商品分类添加
-//    url:'/productCategory/create',
-//    method:'post',
-//    data:data
+    //    url:'/productCategory/create',
+    //    method:'post',
+    //    data:data
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public CommonResult createProductCate(@RequestBody PmsProductCategoryDTO pmsProductCategoryDTO) {
         boolean result =pmsProductCategoryService.CustomSave(pmsProductCategoryDTO);
@@ -110,13 +110,13 @@ public class PmsProductCategoryController {
             return CommonResult.failed();
         }
     }
-//    商品分类编辑
-//    url:'/productCategory/update/'+id,
-//    method:'post',
-//    data:data
+    //    商品分类编辑
+    //    url:'/productCategory/update/'+id,
+    //    method:'post',
+    //    data:data
 @RequestMapping(value = "/update/{id}", method = RequestMethod.POST)
-public CommonResult updateProductCate(@RequestBody PmsProductCategory pmsProductCategory) {
-    boolean result =pmsProductCategoryService.updateById(pmsProductCategory);
+public CommonResult updateProductCate(@RequestBody PmsProductCategoryDTO pmsProductCategoryDTO) {
+    boolean result =pmsProductCategoryService.update(pmsProductCategoryDTO);
     if (result) {
         return CommonResult.success(result);
     } else {
