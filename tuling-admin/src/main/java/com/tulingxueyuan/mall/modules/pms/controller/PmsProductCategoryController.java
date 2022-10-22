@@ -5,7 +5,9 @@ package com.tulingxueyuan.mall.modules.pms.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tulingxueyuan.mall.common.api.CommonPage;
 import com.tulingxueyuan.mall.common.api.CommonResult;
+import com.tulingxueyuan.mall.modules.pms.mapper.PmsProductCategoryMapper;
 import com.tulingxueyuan.mall.modules.pms.model.PmsProductCategory;
+import com.tulingxueyuan.mall.modules.pms.model.dto.PmsProductCategoryChildrenDTO;
 import com.tulingxueyuan.mall.modules.pms.model.dto.PmsProductCategoryDTO;
 import com.tulingxueyuan.mall.modules.pms.service.PmsProductCategoryService;
 import com.tulingxueyuan.mall.modules.pms.service.PmsProductService;
@@ -29,6 +31,8 @@ import java.util.List;
 public class PmsProductCategoryController {
     @Autowired
     PmsProductCategoryService pmsProductCategoryService;
+    @Autowired
+    PmsProductCategoryMapper pmsProductCategoryMapper;
 //商品分类列表  分页显示
     //   url :  /productCategory/list/  + parentId
     //   methood=get
@@ -128,6 +132,19 @@ public CommonResult updateProductCate(@RequestBody PmsProductCategoryDTO pmsProd
 public CommonResult<PmsProductCategory> getProductCateId(@PathVariable long id) {
     PmsProductCategory result =pmsProductCategoryService.getById(id);
     return CommonResult.success(result);
+    }
+
+    /**
+     * 商品列表下商品分类初始化
+     * url:'/productCategory/list/withChildren',
+     *     method:'get'
+     */
+
+    @RequestMapping(value = "list/withChildren", method = RequestMethod.GET)
+    public CommonResult getWithChildren() {
+
+        List<PmsProductCategoryChildrenDTO> list=pmsProductCategoryService.selectWithChild();
+        return CommonResult.success(list);
     }
 
 }

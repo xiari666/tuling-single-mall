@@ -2,6 +2,9 @@ package com.tulingxueyuan.mall.modules.pms.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tulingxueyuan.mall.modules.pms.model.PmsProductCategory;
+import com.tulingxueyuan.mall.modules.pms.model.dto.PmsProductCategoryChildrenDTO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.tulingxueyuan.mall.modules.pms.model.PmsProductCategory;
  */
 public interface PmsProductCategoryMapper extends BaseMapper<PmsProductCategory> {
 
+    List<PmsProductCategoryChildrenDTO> selectWithChildren();
 }

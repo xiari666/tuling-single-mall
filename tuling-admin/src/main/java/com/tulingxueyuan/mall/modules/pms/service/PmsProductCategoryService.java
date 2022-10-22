@@ -3,6 +3,7 @@ package com.tulingxueyuan.mall.modules.pms.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.tulingxueyuan.mall.modules.pms.model.PmsProductCategory;
+import com.tulingxueyuan.mall.modules.pms.model.dto.PmsProductCategoryChildrenDTO;
 import com.tulingxueyuan.mall.modules.pms.model.dto.PmsProductCategoryDTO;
 
 import java.util.List;
@@ -39,4 +40,7 @@ public interface PmsProductCategoryService extends IService<PmsProductCategory> 
 
 
     boolean update(PmsProductCategoryDTO pmsProductCategoryDTO);
+
+
+    List<PmsProductCategoryChildrenDTO> selectWithChild();
 }

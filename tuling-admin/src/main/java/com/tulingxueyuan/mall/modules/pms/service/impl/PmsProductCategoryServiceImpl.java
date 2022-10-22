@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tulingxueyuan.mall.modules.pms.mapper.PmsProductCategoryMapper;
 import com.tulingxueyuan.mall.modules.pms.model.PmsProductCategory;
 import com.tulingxueyuan.mall.modules.pms.model.PmsProductCategoryAttributeRelation;
+import com.tulingxueyuan.mall.modules.pms.model.dto.PmsProductCategoryChildrenDTO;
 import com.tulingxueyuan.mall.modules.pms.model.dto.PmsProductCategoryDTO;
 import com.tulingxueyuan.mall.modules.pms.service.PmsProductCategoryAttributeRelationService;
 import com.tulingxueyuan.mall.modules.pms.service.PmsProductCategoryService;
@@ -32,7 +33,8 @@ import java.util.List;
 public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategoryMapper, PmsProductCategory> implements PmsProductCategoryService {
     @Autowired
     PmsProductCategoryAttributeRelationService pmsProductCategoryAttributeRelationService;
-
+    @Autowired
+    PmsProductCategoryMapper pmsProductCategoryMapper;
     @Override
     public Page list(long parentId, Integer pageNum, Integer pageSize) {
         Page page = new Page(pageNum, pageSize);
@@ -128,5 +130,11 @@ public class PmsProductCategoryServiceImpl extends ServiceImpl<PmsProductCategor
 
         return true;
 
+    }
+
+    @Override
+    public List<PmsProductCategoryChildrenDTO> selectWithChild() {
+
+        return  pmsProductCategoryMapper.selectWithChildren();
     }
 }

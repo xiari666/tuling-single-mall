@@ -1,8 +1,11 @@
 package com.tulingxueyuan.mall.modules.pms.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tulingxueyuan.mall.common.api.CommonPage;
 import com.tulingxueyuan.mall.common.api.CommonResult;
 import com.tulingxueyuan.mall.modules.pms.model.PmsProduct;
+import com.tulingxueyuan.mall.modules.pms.model.dto.ProductConfigDTO;
 import com.tulingxueyuan.mall.modules.pms.service.PmsProductService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +30,25 @@ public class PmsProductController {
       @Autowired
       PmsProductService pmsProductService;
 
+      //商品列表
+      //    url:'/product/list',
+      //    method:'get',
+      //    params:params
+      //    keyword: null,
+      //    pageNum: 1,
+      //    pageSize: 5,
+      //    publishStatus: null,
+      //    verifyStatus: null,
+      //    productSn: null,
+      //    productCategoryId: null,
+      //    brandId: null
       @ApiOperation("商品列表")
       @RequestMapping(value = "/list",method = RequestMethod.GET)
-      public CommonResult<List<PmsProduct>> List(){
-           List<PmsProduct> list=pmsProductService.list();
-           return CommonResult.success(list);
+      public CommonResult List(ProductConfigDTO productConfigDTO){
+           Page page=pmsProductService.list(productConfigDTO);
+           return CommonResult.success(CommonPage.restPage(page));
 
       }
+
 }
 
